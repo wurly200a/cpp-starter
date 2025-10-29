@@ -1,0 +1,12 @@
+lsp:
+  server:
+    type: docker
+    subtype: image
+    name: ghcr.io/wurly200a/builder-linux:latest
+    server: clangd
+    launch_command: "clangd"
+  mappings:
+    - source: .
+      destination: /workspaces/cpp-starter
+  CompileFlags:
+    CompilationDatabase: build
