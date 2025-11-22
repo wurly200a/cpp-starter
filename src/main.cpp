@@ -1,38 +1,47 @@
-#include <iostream>
-#include <string>
-#include <vector>
 #include <chrono>
 #include <filesystem>
+#include <iostream>
+#include <numeric>
+#include <string>
+#include <vector>
 
-using namespace std;
+long long sum(const std::vector<int> &xs) {
+  long long total = 0;
 
-long long sum(vector<int> xs){
-  long long sum = 0;
-
-  for (int v : xs){
-    sum += v;
+  for (int v : xs) {
+    total += v;
   }
 
-  return sum;
+  return total;
 }
 
-int main(int argc, char* argv[]) {
+int main(int argc, char *argv[]) {
+  std::cout << "cpp-starter running.\n";
 
-    cout << "cpp-starter running.\n";
-    cout << "Args (" << argc << "):";
-    for (int i = 0; i < argc; ++i) cout << ' ' << argv[i];
-    cout << "\n";
-    
-    cout << "Current path: " << std::filesystem::current_path() << "\n";
+  std::cout << "Args (" << argc << "):";
+  for (int i = 0; i < argc; ++i) {
+    std::cout << ' ' << argv[i];
+  }
+  std::cout << "\n";
 
-    auto now = chrono::system_clock::now();
-    auto secs = chrono::time_point_cast<chrono::seconds>(now).time_since_epoch().count();
-    cout << "Epoch seconds: " << secs << "\n";
+  try {
+    const auto cwd = std::filesystem::current_path();
+    std::cout << "Current path: " << cwd << "\n";
+  } catch (const std::filesystem::filesystem_error &e) {
+    std::cerr << "Failed to get current path: " << e.what() << "\n";
+  }
 
-    vector<int> xs = {1, 2, 3, 4, 5};
-    auto value = sum(xs);
-    cout << "Sum = " << value << "\n";
-    cout << "OK.\n";
-    
-    return 0;
+  const auto now = std::chrono::system_clock::now();
+  const auto secs =
+      std::chrono::duration_cast<std::chrono::seconds>(now.time_since_epoch())
+          .count();
+  std::cout << "Epoch seconds: " << secs << "\n";
+
+  const std::vector<int> xs{1, 2, 3, 4, 5};
+  const auto value = sum(xs);
+  std::cout << "Sum = " << value << "\n";
+
+  std::cout << "OK.\n";
+
+  return 0;
 }
